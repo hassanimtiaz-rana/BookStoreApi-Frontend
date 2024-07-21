@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./AddBook.css">
+    <title>My Online Book Store</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="./AddBook.css">
+</head>
+<body>
+    <section class="book-form">
+        <h2>Edit Book</h2>
+        <form id="bookForm">
+            <div class="form-group">
+                <label for="bookId">Book Id</label>
+                <input type="text" id="bookId" name="bookId" required>
+            </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" id="author" name="author" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description" required>
+            </div>
+            <div class="form-group">
+                <label for="imageUrl">Image Url</label>
+                <input type="text" id="imageUrl" name="imageUrl" required>
+            </div>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+
+    <script>
+        $(document).ready(function() {
+            $('#bookForm').on('submit', function(event) {
+                event.preventDefault(); // prevent default method of reload page
+
+                // Collect form data it is an object with key value pair
+                const bookData = {
+                    id:$('#bookId').val(),
+                    title: $('#title').val(),
+                    author: $('#author').val(),
+                    description: $('#description').val(),
+                    imageUrl: $('#imageUrl').val()
+                };
+
+                // Send put request
+                $.ajax({
+                    url: `https://localhost:7241/api/Books/${bookData.id}`,
+                    method: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(bookData),//converts into json format
+                    success: function(response) {
+                        alert('Book edited successfully!');
+                      
+                    },
+                    error: function(error) {
+                        console.error('Error editing book:', error);
+                        alert('Failed to edit book. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
